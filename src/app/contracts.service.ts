@@ -10,7 +10,11 @@ declare const window: any;
 })
 export class ContractsService {
     contractAddress= '0x7CFc4846F8162616756be9c210330E0c0fB8F3BB';
- 
+_contract: any;
+constructor(){
+    var web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
+    this._contract =  new web3.eth.Contract(abi as AbiItem[], this.contractAddress );
+}
     window:any;
     private getAccounts = async () => {
         try {
@@ -33,19 +37,32 @@ export class ContractsService {
         }
         return addresses.length ? addresses[0] : null;
     };
-    public async getBnBRate(token:string) {        
-       var web3 = await new Web3('https://data-seed-prebsc-2-s3.binance.org:8545');
-       debugger;
+    public async getRate(token:string) {        
+    //    var web3 = await new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
        if(token == 'BNB_rate'){
-        const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
-        var rs:number = await contract.methods.BNB_rate().call();
+       // const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress, );
+        var rs:number = await this._contract.methods.BNB_rate().call();
         return rs;
        }
        if(token == 'USDT_rate'){
-        const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
-        var rs:number = await contract.methods.USDT_rate().call();
+        //const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
+        var rs:number = await this._contract.methods.USDT_rate().call();
         return rs;
        }
        return 1;
     }
+    public async buyByBNB(token:string) {        
+        var web3 = await new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
+        if(token == 'BNB_rate'){
+         const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress, );
+         var rs:number = await contract.methods.BNB_rate().call();
+         return rs;
+        }
+        if(token == 'USDT_rate'){
+         const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
+         var rs:number = await contract.methods.USDT_rate().call();
+         return rs;
+        }
+        return 1;
+     }
 }

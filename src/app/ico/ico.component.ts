@@ -6,6 +6,7 @@ export interface Tokens {
   image: string;
   rate: number;
   volume: number;
+  tokenName: string;
 }
 @Component({
   selector: 'app-ico',
@@ -16,16 +17,16 @@ export class IcoComponent implements OnInit {
  bnbRate = 1;
  usdtRate = 1;
   constructor(private contractService: ContractsService) {
-
+    this.contractService.getRate('BNB_rate').then(resp =>{
+      this.bnbRate =  resp;
+    });
+    this.contractService.getRate('USDT_rate').then(resp =>{
+      this.usdtRate =  resp;
+    });
   }
 
   ngOnInit(): void {
-   this.contractService.getBnBRate('BNB_rate').then(resp =>{
-    this.bnbRate =  resp;
-  });
-  this.contractService.getBnBRate('USDT_rate').then(resp =>{
-    this.usdtRate =  resp;
-  });
+  
   }
   title = "Connect MetaMask";
   openMetaMask(init:any){
@@ -35,9 +36,18 @@ export class IcoComponent implements OnInit {
     //console.log("sasasasas")
   }
   tokens: Tokens[] = [
-    {Name: 'BNB PACKAGE 01', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 1000},
-    {Name: 'BNB PACKAGE 02', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 5000},
-    {Name: 'BNB PACKAGE 03', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 10000},
-    {Name: 'BNB PACKAGE 04', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 20000}
-  ];  
+    {Name: 'BNB PACKAGE 01', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 100, tokenName:"BNB"},
+    {Name: 'BNB PACKAGE 02', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 500, tokenName:"BNB"},
+    {Name: 'BNB PACKAGE 03', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 1000, tokenName:"BNB"},
+    {Name: 'BNB PACKAGE 04', image: "./../../assets/img/tokens/bnb.png", rate: 1, volume: 2000, tokenName:"BNB"},
+    {Name: 'USDT PACKAGE 01', image: "./../../assets/img/tokens/usdt.jpg", rate: 1, volume: 100, tokenName:"USDT"},
+    {Name: 'USDT PACKAGE 02', image: "./../../assets/img/tokens/usdt.jpg", rate: 1, volume: 500, tokenName:"USDT"},
+    {Name: 'USDT PACKAGE 03', image: "./../../assets/img/tokens/usdt.jpg", rate: 1, volume: 1000, tokenName:"USDT"},
+    {Name: 'USDT PACKAGE 04', image: "./../../assets/img/tokens/usdt.jpg", rate: 1, volume: 15000, tokenName:"USDT"},
+  ]; 
+  getRawValueBuy(value: number, token: string){
+    if(token == "BNB")
+      return value/this.bnbRate;
+    return value/this.usdtRate;
+  } 
 }

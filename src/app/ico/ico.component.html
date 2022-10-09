@@ -27,13 +27,13 @@
       <div class="card-body">
         <div class="row">
           <div class="col col-md-12 col-lg-3"  *ngFor="let token of tokens">
-            <div class="card" style="padding: 20px;">
+            <div class="card" style="padding: 20px;margin: 5px;">
               <div class="css-sq0hr0">
                 <img alt="bnb" src="{{token.image}}" class="img-thumbnail">
               </div>
               <p class="fw-bold" style="padding-top: 10px;">{{token.Name}}</p>
               <button type="button" class="btn btn-info">{{token.volume}} MTK01</button>
-              <div class="figure-caption"><p class="fw-bold fs-6 text-md-start" style="padding-top: 10px;">Amount of coins to pay: <span>{{token.volume/bnbRate}} BNB</span></p></div>
+              <div class="figure-caption"><p class="fw-bold fs-6 text-md-start" style="padding-top: 10px;">Amount of coins to pay: <span>{{getRawValueBuy(token.volume,token.tokenName)}} {{token.tokenName}}</span></p></div>
               <button type="button" class="btn btn-success">Buy Now</button>
             </div>
           </div>
