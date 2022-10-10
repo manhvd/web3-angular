@@ -81,10 +81,9 @@ export class ContractsService {
         }
     }
     public async buyByUSTD(token:string) {   
-        debugger
         if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
-            const tx: TransactionResponse = await this._contract.buyTokenByUSDT({
-                token,
+            var amount = ethers.utils.parseEther(token);
+            const tx: TransactionResponse = await this._contract.buyTokenByUSDT(amount,{
                 ...this._option
               }).then((tx: any)=>{
                 //action prior to transaction being mined
