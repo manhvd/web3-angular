@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import Web3 from "web3";
 import abi from './../abi.json';
-import { AbiItem } from 'web3-utils';
+import { ethers } from "ethers";
+import {
+    TransactionResponse,
+  } from "@ethersproject/abstract-provider";
 declare const window: any;
 
 
@@ -9,12 +12,14 @@ declare const window: any;
     providedIn: 'root'
 })
 export class ContractsService {
-    contractAddress= '0x7CFc4846F8162616756be9c210330E0c0fB8F3BB';
-_contract: any;
-constructor(){
-    var web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
-    this._contract =  new web3.eth.Contract(abi as AbiItem[], this.contractAddress );
-}
+    _contract: ethers.Contract;
+    contractAddress= '0x5857b5Dda36aFAe646e758c6d19d2B09f2504025';
+    _option: any;
+    constructor(){
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        this._contract = new ethers.Contract(this.contractAddress, abi, provider.getSigner());
+        this._option = { gasLimit: 1000000 };
+    }
     window:any;
     private getAccounts = async () => {
         try {
@@ -23,6 +28,14 @@ constructor(){
             return [];
         }
     }
+    private getBalance = async (account:any) => {
+        try {
+            return await window.ethereum.request({method: 'eth_getBalance', params: [account, 'latest']});
+        } catch (e) {
+            return 0;
+        }
+       
+    };
 
     public openMetamask = async (init = false) => {
         window.web3 = new Web3(window.ethereum);
@@ -35,34 +48,61 @@ constructor(){
                 return false;
             }
         }
-        return addresses.length ? addresses[0] : null;
+        let balance = await this.getBalance(addresses[0]);
+          
+        return addresses.length ? addresses[0] + " with BNB amount: "+ ethers.utils.formatEther(balance) +"$" : null;
     };
     public async getRate(token:string) {        
-    //    var web3 = await new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
        if(token == 'BNB_rate'){
-       // const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress, );
-        var rs:number = await this._contract.methods.BNB_rate().call();
+        var rs:number = await this._contract.BNB_rate();
         return rs;
        }
        if(token == 'USDT_rate'){
-        //const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
-        var rs:number = await this._contract.methods.USDT_rate().call();
+        var rs:number = await this._contract.USDT_rate();
         return rs;
        }
        return 1;
     }
-    public async buyByBNB(token:string) {        
-        var web3 = await new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
-        if(token == 'BNB_rate'){
-         const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress, );
-         var rs:number = await contract.methods.BNB_rate().call();
-         return rs;
+    public async buyByBNB(token:string) {   
+        if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+            const tx: TransactionResponse = await this._contract.buyTokenByBNB({
+                ...this._option,
+                value: token
+              }).then((tx: any)=>{
+                //action prior to transaction being mined
+                    return tx;
+             })
+             .catch(()=>{
+             //action to perform when user clicks "reject"
+             })
+             return this.handleTransactionResponse(tx);
+        } else {
+            return null;
         }
-        if(token == 'USDT_rate'){
-         const contract = await new web3.eth.Contract(abi as AbiItem[], this.contractAddress);
-         var rs:number = await contract.methods.USDT_rate().call();
-         return rs;
+    }
+    public async buyByUSTD(token:string) {   
+        debugger
+        if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')) {
+            const tx: TransactionResponse = await this._contract.buyTokenByUSDT({
+                token,
+                ...this._option
+              }).then((tx: any)=>{
+                //action prior to transaction being mined
+                    return tx;
+             })
+             .catch((ex: any)=>{
+                console.log(ex);
+             //action to perform when user clicks "reject"
+             })
+              
+              return this.handleTransactionResponse(tx);
+        } else {
+            return null;
         }
-        return 1;
-     }
+    }
+    handleTransactionResponse = async(tx: TransactionResponse) => {
+        const recept = await tx.wait();
+        return recept.transactionHash;
+    }
+   
 }

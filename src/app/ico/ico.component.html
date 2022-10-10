@@ -8,12 +8,12 @@
           </div>
           <div class="col-md d-flex align-items-center">
             <div class="pe-0 pe-md-4">
-              <small class="text-uppercase text-muted">ICO the fisrt token</small>
+              <small class="text-uppercase mb-4">ICO MTK01, this is my first Token</small>
               <h2 class="mb-4">Token name: MTK01</h2>
               <p class="mb-4"></p>
               <div class="mb-4">
                 <a (click)= "openMetaMask(1)"
-                   class="btn btn-success mb-1">
+                   class="btn btn-primary mb-1">
                  {{title}}
                 </a>
               </div>
@@ -26,7 +26,7 @@
       <div class="card-header">Buy by BNB</div>
       <div class="card-body">
         <div class="row">
-          <div class="col col-md-12 col-lg-3"  *ngFor="let token of tokens">
+          <div class="col col-md-12 col-lg-3"  *ngFor="let token of packageBnb">
             <div class="card" style="padding: 20px;margin: 5px;">
               <div class="css-sq0hr0">
                 <img alt="bnb" src="{{token.image}}" class="img-thumbnail">
@@ -34,10 +34,48 @@
               <p class="fw-bold" style="padding-top: 10px;">{{token.Name}}</p>
               <button type="button" class="btn btn-info">{{token.volume}} MTK01</button>
               <div class="figure-caption"><p class="fw-bold fs-6 text-md-start" style="padding-top: 10px;">Amount of coins to pay: <span>{{getRawValueBuy(token.volume,token.tokenName)}} {{token.tokenName}}</span></p></div>
-              <button type="button" class="btn btn-success">Buy Now</button>
+              <button type="button" class="btn btn-warning" (click)="buyByBNB(token.volume)">Buy Now</button>
             </div>
           </div>
       </div>
     </div>
+    <div class="card">
+        <div class="card-header">Buy by USDT</div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col col-md-12 col-lg-3"  *ngFor="let token of packageUsdt">
+              <div class="card" style="padding: 20px;margin: 5px;">
+                <div class="css-sq0hr0">
+                  <img alt="bnb" src="{{token.image}}" class="img-thumbnail">
+                </div>
+                <p class="fw-bold" style="padding-top: 10px;">{{token.Name}}</p>
+                <button type="button" class="btn btn-info">{{token.volume}} MTK01</button>
+                <div class="figure-caption"><p class="fw-bold fs-6 text-md-start" style="padding-top: 10px;">Amount of coins to pay: <span>{{getRawValueBuy(token.volume,token.tokenName)}} {{token.tokenName}}</span></p></div>
+                <button type="button" class="btn btn-success" (click)="buyByUSDT(token.volume)">Buy Now</button>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>
-  
+    
+    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">CONGRATULATIONS</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                CONGRATULATIONS, YOUR TRANSACTION HAS BEEN SUCCESSFUL!
+                <p>
+                    Transaction hash: <span style="font-weight: bold;">{{txtHashDisplay}}</span> , <a (click)="goToBscScan()" class="link-primary" style="cursor: pointer;">click to more detail.</a>
+                </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
