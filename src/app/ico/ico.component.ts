@@ -79,7 +79,7 @@ export class IcoComponent implements OnInit {
   buyByUSDT(volume: number){
     this.onOverlay();
     if(volume > 0){
-      const bnbBuyRaw = Web3.utils.toWei(JSON.stringify(volume/this.usdtRate), 'ether');     
+      const bnbBuyRaw = JSON.stringify(volume/this.usdtRate);    
       this.contractService.buyByUSTD(bnbBuyRaw).then(resp =>{
         this.txtHash = resp ? resp: '';
         this.linkScan = "https://testnet.bscscan.com/tx/" + this.txtHash;

@@ -13,7 +13,7 @@ declare const window: any;
 })
 export class ContractsService {
     _contract: ethers.Contract;
-    contractAddress= '0x5857b5Dda36aFAe646e758c6d19d2B09f2504025';
+    contractAddress= '0x58aA8f4147Ed63BB94759223453b235F5caB8B68';
     _option: any;
     constructor(){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
