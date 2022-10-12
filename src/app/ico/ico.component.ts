@@ -14,10 +14,11 @@ export interface Tokens {
   styleUrls: ['./ico.component.css']
 })
 export class IcoComponent implements OnInit {
- bnbRate = 1;
- usdtRate = 1;
+ bnbRate = 0;
+ usdtRate = 0;
  txtHash = '';
  txtHashDisplay = "";
+ title = "Connect MetaMask";
  linkScan = "https://testnet.bscscan.com/tx/0xd4565f52f6e176c53b1a48ce68e9a2946aa723c10ad5ae440a1b831e093dad84";
   constructor(private contractService: ContractsService) {
     this.contractService.getRate('BNB_rate').then(resp =>{
@@ -30,11 +31,12 @@ export class IcoComponent implements OnInit {
 
   ngOnInit(): void {
     this.contractService.openMetamask(false).then(resp =>{
-      this.title = "Connect address: " + resp;
+      if(resp){
+        this.title = "Connect address: " + resp;
+      }
     })
-      
   }
-  title = "Connect MetaMask";
+ 
   openMetaMask(init:any){
     this.contractService.openMetamask(init).then(resp =>{
       this.title = "Connect address: " + resp;

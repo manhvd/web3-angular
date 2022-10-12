@@ -303,18 +303,10 @@
 </style>
 
 
-
-
-
-  <!-- Resources -->
-  <h2>ICO marketplace</h2>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
+  <button mat-button [matMenuTriggerFor] = "menu">Menu</button>
+  <mat-menu #menu = "matMenu">
+     <button mat-menu-item routerLink="/ico">ICO Marketplace</button>
+     <button mat-menu-item routerLink="/nft">NFT Marketplace</button>
+     <button mat-menu-item routerLink="/vault">Vault</button>
+  </mat-menu>
 <router-outlet></router-outlet>

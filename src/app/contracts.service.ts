@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Web3 from "web3";
 import abi from './../abi.json';
 import { ethers } from "ethers";
+import { AbiItem } from 'web3-utils'
 import {
     TransactionResponse,
   } from "@ethersproject/abstract-provider";
@@ -13,11 +14,14 @@ declare const window: any;
 })
 export class ContractsService {
     _contract: ethers.Contract;
+    _contractPublic: any;
     contractAddress= '0x58aA8f4147Ed63BB94759223453b235F5caB8B68';
     _option: any;
     constructor(){
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         this._contract = new ethers.Contract(this.contractAddress, abi, provider.getSigner());
+        const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545");
+        this._contractPublic = new web3.eth.Contract(abi as AbiItem[] ,this.contractAddress);
         this._option = { gasLimit: 1000000 };
     }
     window:any;
@@ -25,6 +29,7 @@ export class ContractsService {
         try {
             return await window.ethereum.request({ method: 'eth_accounts' });
         } catch (e) {
+            debugger
             return [];
         }
     }
@@ -54,11 +59,11 @@ export class ContractsService {
     };
     public async getRate(token:string) {        
        if(token == 'BNB_rate'){
-        var rs:number = await this._contract.BNB_rate();
+        var rs:number = await this._contractPublic.methods.BNB_rate().call();
         return rs;
        }
        if(token == 'USDT_rate'){
-        var rs:number = await this._contract.USDT_rate();
+        var rs:number = await this._contractPublic.methods.USDT_rate().call();
         return rs;
        }
        return 1;

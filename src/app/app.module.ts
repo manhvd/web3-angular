@@ -10,6 +10,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatMenuModule} from '@angular/material/menu'
+import {MatButtonModule} from '@angular/material/button'
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import * as $ from "jquery";
 @NgModule({
   declarations: [
@@ -22,6 +25,7 @@ import * as $ from "jquery";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatMenuModule, MatButtonModule,
     MatCardModule,
     MatGridListModule,
     NgbModule
