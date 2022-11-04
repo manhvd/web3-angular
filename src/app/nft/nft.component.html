@@ -1,1 +1,47 @@
-<p>nft works!</p>
+
+<div class="card mt-1">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-auto text-center">
+          <img src="./../../assets/img/logo.png" style="max-width: 400px;"
+               class="w-100 mb-5 my-md-3">
+        </div>
+        <div class="col-md d-flex align-items-center">
+          <div class="pe-0 pe-md-4">
+            <small class="text-uppercase mb-4">NFT Market Place</small>
+            <p class="mb-4"></p>
+            <div class="mb-4">
+              <a (click)= "openMetaMask(1)"
+                 class="btn btn-warning mb-1">
+                 {{title}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">NFTs</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col col-md-12 col-lg-3"  *ngFor="let nft of lstAllItem">
+          <div class="card" style="padding: 20px;margin: 5px;">
+            <div class="css-sq0hr0">
+              <img alt="bnb" src="{{nft.image}}" class="img-thumbnail">
+            </div>
+            <p class="fw-bold" style="padding-top: 10px; text-align: center;">{{nft.name}}</p>
+            <div class="figure-caption">
+              <p class="fw-bold text-md-start">Description: <span>{{nft.description}}</span></p>
+              <p class="fw-bold text-md-start"><span>Attributes:</span></p>
+              <p class="text-sm-start" *ngFor="let a of nft.attributes">
+                <span>{{a.trait_type}} : {{a.value}}</span>
+              </p>
+            </div>
+            <button type="button" class="btn btn-warning">Buy Now</button>
+          </div>
+        </div>
+    </div>
+  </div>
+  </div>
+  
